@@ -1,0 +1,3 @@
+/home/midly/code/PasswordManager/build/CMakeFiles/passmgr.dir
+/home/midly/code/PasswordManager/build/CMakeFiles/edit_cache.dir
+/home/midly/code/PasswordManager/build/CMakeFiles/rebuild_cache.dir

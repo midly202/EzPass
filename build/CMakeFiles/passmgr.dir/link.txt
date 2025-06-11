@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/passmgr.dir/link.d CMakeFiles/passmgr.dir/src/main.cpp.o CMakeFiles/passmgr.dir/src/include/helper.cpp.o -o passmgr
