@@ -3,3 +3,6 @@ build/
 
 # Ignore CLANGD cache 
 .cache/
+
+# Ignore VS files
+.VS

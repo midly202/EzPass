@@ -19,6 +19,7 @@ void pause()
   std::cout << "Press ENTER to continue...";
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   system("clear");  // linux only!
+  // system("cls");  // windows only!
 }
 
 // Encrypt / decrypt with XOR
@@ -42,9 +43,10 @@ void saveLogin(const Login& login)
     return;
   }
 
-  std::string entry = login.email + "|" + login.user + "|" + login.pass + "\n";
+  std::string entry = login.email + "|" + login.user + "|" + login.pass;
   std::string encrypted = xorCrypt(entry);
-  file << encrypted;
+  file << encrypted << '\n'; // Write a real newline after encryption
+
 }
 
 // Read all logins from file
