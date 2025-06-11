@@ -9,12 +9,32 @@
 void showMenu()
 {
     clearScreen();
-    std::cout << "--- Login Manager ---\n";
-    std::cout << "[1]. Display logins\n";
-    std::cout << "[2]. Create new login\n";
-    std::cout << "[3]. Generate secure password\n";
-    std::cout << "[4]. Exit\n";
-    std::cout << "Select an option: ";
+    std::cout << RGB_PURPLE + BOLD << R"(
+ +----------------------------------------------------------------+
+ |                                                                |
+ |                                                                |
+ |)" << BRIGHT_RED + "   /$$$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "  | $$_____/|_____ $$ | $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$  " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "  | $$           /$$/ | $$  \\ $$| $$  \\ $$| $$  \\__/| $$  \\__/  " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "  | $$$$$       /$$/  | $$$$$$$/| $$$$$$$$|  $$$$$$ |  $$$$$$   " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "  | $$__/      /$$/   | $$____/ | $$__  $$ \\____  $$ \\____  $$  " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "  | $$        /$$/    | $$      | $$  | $$ /$$  \\ $$ /$$  \\ $$  " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "  | $$$$$$$$ /$$$$$$$$| $$      | $$  | $$|  $$$$$$/|  $$$$$$/  " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "  |________/|________/|__/      |__/  |__/ \\______/  \\______/   " + RESET + RGB_PURPLE + BOLD << R"(|
+ |                                                                |
+ |     /\___/\                                                    |
+ |    ( o   o )   Hi Midly! :3                                    |
+ |    (  =^=  )                                                   |
+ |    (        )                                                  |
+ |    (         )                                                 |
+ |    (          )))))))))))))))                                  |
+ +----------------------------------------------------------------+
+)" << RESET << "\n";
+    std::cout << RGB_PURPLE + BOLD << "[1] Display logins\n" << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[2] Create new login\n" << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[3] Generate secure password\n" << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[4] Exit\n" << RESET;
+    std::cout << BRIGHT_RED + BOLD << "Select an option: " << RESET;
 }
 
 void clearScreen()
@@ -170,8 +190,7 @@ void password()
     while (true)
     {
         clearScreen();
-        std::cout << "Enter the length of the password (enter a value between "
-                     "1-999): ";
+        std::cout << "Enter the length of the password (between 1 and 999): ";
         std::cin >> login.length;
 
         // Check if the input is valid
@@ -180,7 +199,8 @@ void password()
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             clearScreen();
-            std::cout << "Invalid input. Please enter a positive integer.\n";
+            std::cout << "Invalid input. Please enter an integer between 1 and 999.\n";
+            pause();
         }
         else
         {
@@ -190,6 +210,6 @@ void password()
     }
 
     clearScreen();
-    std::cout << "Password: \n" << generatePass(login.length) << "\n";
+    std::cout << "Generated Password: \n" << generatePass(login.length) << "\n";
     pause();
 }
