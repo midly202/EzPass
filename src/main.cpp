@@ -3,6 +3,13 @@
 
 #include "helper.h"
 
+/*
+
+TODO:
+- Instead of login #1, login #2, let user choose a name
+
+*/
+
 int main()
 {
     // Code

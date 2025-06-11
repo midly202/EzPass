@@ -27,7 +27,7 @@ void showMenu()
  |    (  =^=  )                                                   |
  |    (        )                                                  |
  |    (         )                                                 |
- |    (          )))))))))))))))                                  |
+ |    (          ))))))))                                         |
  +----------------------------------------------------------------+
 )" << RESET << "\n";
     std::cout << RGB_PURPLE + BOLD << "[1] Display logins\n" << RESET;
@@ -111,7 +111,7 @@ void displayLogins()
     if (logins.empty())
     {
         clearScreen();
-        std::cout << "No logins found!\n";
+        std::cout << BRIGHT_RED << "No logins found!\n" + RESET;
     }
     else
     {
@@ -119,12 +119,10 @@ void displayLogins()
         for (size_t i = 0; i < logins.size(); ++i)
         {
             const auto& login = logins[i];
-            std::cout << "Login #" << (i + 1) << "\n";
-            std::cout << "   Email:    "
-                      << (login.email.empty() ? "[none]" : login.email) << "\n";
-            std::cout << "   Username: "
-                      << (login.user.empty() ? "[none]" : login.user) << "\n";
-            std::cout << "   Password: " << login.pass << "\n";
+            std::cout << BRIGHT_RED << "Login #" << (i + 1) << RESET + "\n";
+            std::cout << CYAN << "   Email:    " << (login.email.empty() ? "[none]" : login.email) << RESET + "\n";
+            std::cout << CYAN << "   Username: " << (login.user.empty() ? "[none]" : login.user) << RESET + "\n";
+            std::cout << CYAN << "   Password: " << login.pass << RESET + "\n";
         }
     }
     pause();
