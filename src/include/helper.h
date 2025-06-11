@@ -4,6 +4,8 @@
 
 void showMenu();
 
+void clearScreen();
+
 void pause();
 
 std::string xorCrypt(const std::string& data);
@@ -15,3 +17,7 @@ std::vector<Login> readLogins();
 void displayLogins();
 
 void createLogin();
+
+std::string generatePass(int length);
+
+void password();

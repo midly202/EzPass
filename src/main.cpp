@@ -23,6 +23,9 @@ int main()
         createLogin();
         break;
       case 3:
+        password();
+        break;
+      case 4:
         std::cout << "Exiting!\n";
         return 0;
       default:

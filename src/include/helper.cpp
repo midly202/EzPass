@@ -3,23 +3,34 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <random>
 
 // Show menu
 void showMenu()
 {
-  std::cout << "\n--- Login Manager ---\n";
-  std::cout << "[1]. Display logins\n";
-  std::cout << "[2]. Create new login\n";
-  std::cout << "[3]. Exit\n";
-  std::cout << "Select an option: ";
+    clearScreen();
+    std::cout << "--- Login Manager ---\n";
+    std::cout << "[1]. Display logins\n";
+    std::cout << "[2]. Create new login\n";
+    std::cout << "[3]. Generate secure password\n";
+    std::cout << "[4]. Exit\n";
+    std::cout << "Select an option: ";
+}
+
+void clearScreen()
+{
+  #ifdef _WIN32
+    system("cls");  // Windows only!
+  #else
+    system("clear");  // Linux / MacOS only!
+  #endif
 }
 
 void pause()
 {
-  std::cout << "Press ENTER to continue...";
+  std::cout << "\nPress ENTER to continue...";
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-  system("clear");  // linux only!
-  // system("cls");  // windows only!
+  clearScreen();
 }
 
 // Encrypt / decrypt with XOR
@@ -45,7 +56,7 @@ void saveLogin(const Login& login)
 
   std::string entry = login.email + "|" + login.user + "|" + login.pass;
   std::string encrypted = xorCrypt(entry);
-  file << encrypted << '\n'; // Write a real newline after encryption
+  file << encrypted << '\n';
 
 }
 
@@ -80,10 +91,12 @@ void displayLogins()
   auto logins = readLogins();
   if (logins.empty())
   {
-    std::cout << "No logins found!\n";
+      clearScreen();
+      std::cout << "No logins found!\n";
   }
   else
   {
+    clearScreen();
     for (size_t i = 0; i < logins.size(); ++i)
     {
       const auto& login = logins[i];
@@ -103,6 +116,8 @@ void createLogin()
 {
   Login login;
 
+  clearScreen();
+
   std::cout << "Enter email (optional): ";
   std::getline(std::cin, login.email);
 
@@ -111,7 +126,9 @@ void createLogin()
 
   if (login.email.empty() && login.user.empty())
   {
+    clearScreen();
     std::cout << "Error: Email and username cannot both be empty.\n";
+    pause();
     return;
   }
 
@@ -120,11 +137,58 @@ void createLogin()
 
   if (login.pass.empty())
   {
+    clearScreen();
     std::cout << "Error: Password cannot be empty.\n";
+    pause();
     return;
   }
 
   saveLogin(login);
+  clearScreen();
   std::cout << "Login saved succesfully.\n";
   pause();
+}
+
+std::string generatePass(int length) 
+{
+    std::string result;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, static_cast<int>(lettersAndNumbersAndSpecial.size()) - 1);
+
+    for (int i = 0; i < length; ++i) 
+    {
+        result += lettersAndNumbersAndSpecial[distrib(gen)];
+    }
+    return result;
+}
+
+void password()
+{
+    Login login;
+
+    while (true) 
+    {
+		clearScreen();
+        std::cout << "Enter the length of the password (enter a value between 1-999): ";
+        std::cin >> login.length;
+
+        // Check if the input is valid
+        if (std::cin.fail() || login.length <= 0 || login.length >= 1000) 
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            clearScreen();
+            std::cout << "Invalid input. Please enter a positive integer.\n";
+        }
+        else 
+        {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            break; // Valid input, exit the loop
+        }
+    }
+
+    clearScreen();
+    std::cout << "Password: \n" << generatePass(login.length) << "\n";
+    pause();
 }
