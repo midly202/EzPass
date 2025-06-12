@@ -33,10 +33,10 @@ int main()
                 password();
                 break;
             case 4:
-                std::cout << "Exiting!\n";
+                clearScreen();
                 return 0;
             default:
-                std::cout << "Invalid!\n";
+                std::cout << "Invalid input!\n";
                 break;
         }
     }
