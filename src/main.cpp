@@ -19,13 +19,13 @@ int main()
         int choice;
         std::cin >> choice;
 
-        // Check if the input is valid
-        if (std::cin.fail()) {
-            std::cin.clear(); // Clear the error state
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the rest of the line
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << BRIGHT_RED + "Invalid input!\n" + RESET;
             pause();
-            continue; // Go back to the start of the loop
+            continue;
         }
 
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
