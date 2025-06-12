@@ -6,7 +6,7 @@
 /*
 
 TODO:
-- Instead of login #1, login #2, let user choose a name
+- Sort alphabetically the logins
 
 */
 

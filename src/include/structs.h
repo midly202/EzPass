@@ -79,8 +79,9 @@ const std::string RGB_MINT = "\033[38;2;152;255;152m";
 
 struct Login
 {
+    std::string name;
     std::string email;
     std::string user;
     std::string pass;
-    int length = 12;
+    int length;
 };

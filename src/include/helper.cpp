@@ -74,7 +74,7 @@ void saveLogin(const Login& login)
         return;
     }
 
-    std::string entry = login.email + "|" + login.user + "|" + login.pass;
+    std::string entry = login.name + "|" + login.email + "|" + login.user + "|" + login.pass;
     std::string encrypted = xorCrypt(entry);
     file << encrypted << '\n';
 }
@@ -92,12 +92,15 @@ std::vector<Login> readLogins()
         line = xorCrypt(line);
         size_t pos1 = line.find("|");
         size_t pos2 = line.find("|", pos1 + 1);
-        if (pos1 != std::string::npos && pos2 != std::string::npos)
+        size_t pos3 = line.find("|", pos2 + 1);
+
+        if (pos1 != std::string::npos && pos2 != std::string::npos && pos3 != std::string::npos)
         {
             Login login;
-            login.email = line.substr(0, pos1);
-            login.user = line.substr(pos1 + 1, pos2 - pos1 - 1);
-            login.pass = line.substr(pos2 + 1);
+            login.name = line.substr(0, pos1); // Read name
+            login.email = line.substr(pos1 + 1, pos2 - pos1 - 1); // Read email
+            login.user = line.substr(pos2 + 1, pos3 - pos2 - 1); // Read username
+            login.pass = line.substr(pos3 + 1); // Read password
             logins.push_back(login);
         }
     }
@@ -119,10 +122,11 @@ void displayLogins()
         for (size_t i = 0; i < logins.size(); ++i)
         {
             const auto& login = logins[i];
-            std::cout << BRIGHT_RED << "Login #" << (i + 1) << RESET + "\n";
-            std::cout << RGB_PURPLE + "   Email:    " << (login.email.empty() ? "[none]" : login.email) << RESET + "\n";
-            std::cout << RGB_PURPLE + "   Username: " << (login.user.empty() ? "[none]" : login.user) << RESET + "\n";
-            std::cout << RGB_PURPLE + "   Password: " << login.pass << RESET + "\n";
+            // std::cout << BRIGHT_RED << "Login #" << (i + 1) << RESET + "\n";
+            std::cout << BRIGHT_RED << login.name << RESET + "\n";
+            std::cout << RGB_PURPLE + "   Email:    " + RESET + BRIGHT_RED << (login.email.empty() ? "..." : login.email) << RESET + "\n";
+            std::cout << RGB_PURPLE + "   Username: " + RESET + BRIGHT_RED << (login.user.empty() ? "..." : login.user) << RESET + "\n";
+            std::cout << RGB_PURPLE + "   Password: " + RESET + BRIGHT_RED << login.pass << RESET + "\n\n";
         }
     }
     pause();
@@ -135,21 +139,24 @@ void createLogin()
 
     clearScreen();
 
-    std::cout << RGB_PURPLE + "Enter email (optional): " + RESET;
-    std::getline(std::cin, login.email);
+	std::cout << RGB_PURPLE + "[Required] Enter title: " + RESET;
+	std::getline(std::cin, login.name);
 
-    std::cout << RGB_PURPLE + "Enter username (optional): " + RESET;
-    std::getline(std::cin, login.user);
-
-    if (login.email.empty() && login.user.empty())
+    if (login.name.empty())
     {
         clearScreen();
-        std::cout << BRIGHT_RED + BOLD + "Error: Email and username cannot both be empty.\n" + RESET;
+        std::cout << BRIGHT_RED + BOLD + "Error: Title cannot be empty.\n" + RESET;
         pause();
         return;
     }
 
-    std::cout << RGB_PURPLE + "Enter password: " + RESET;
+    std::cout << RGB_PURPLE + "[Optional] Enter email: " + RESET;
+    std::getline(std::cin, login.email);
+
+    std::cout << RGB_PURPLE + "[Optional] Enter username: " + RESET;
+    std::getline(std::cin, login.user);
+
+    std::cout << RGB_PURPLE + "[Required] Enter password: " + RESET;
     std::getline(std::cin, login.pass);
 
     if (login.pass.empty())
