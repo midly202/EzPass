@@ -48,7 +48,7 @@ void clearScreen()
 
 void pause()
 {
-    std::cout << "\nPress ENTER to continue...";
+    std::cout << RGB_PURPLE + "\nPress ENTER to continue..." + RESET;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     clearScreen();
 }
@@ -111,7 +111,7 @@ void displayLogins()
     if (logins.empty())
     {
         clearScreen();
-        std::cout << BRIGHT_RED << "No logins found!\n" + RESET;
+        std::cout << BRIGHT_RED + BOLD + "No logins found!\n" + RESET;
     }
     else
     {
@@ -120,9 +120,9 @@ void displayLogins()
         {
             const auto& login = logins[i];
             std::cout << BRIGHT_RED << "Login #" << (i + 1) << RESET + "\n";
-            std::cout << CYAN << "   Email:    " << (login.email.empty() ? "[none]" : login.email) << RESET + "\n";
-            std::cout << CYAN << "   Username: " << (login.user.empty() ? "[none]" : login.user) << RESET + "\n";
-            std::cout << CYAN << "   Password: " << login.pass << RESET + "\n";
+            std::cout << RGB_PURPLE + "   Email:    " << (login.email.empty() ? "[none]" : login.email) << RESET + "\n";
+            std::cout << RGB_PURPLE + "   Username: " << (login.user.empty() ? "[none]" : login.user) << RESET + "\n";
+            std::cout << RGB_PURPLE + "   Password: " << login.pass << RESET + "\n";
         }
     }
     pause();
@@ -135,34 +135,34 @@ void createLogin()
 
     clearScreen();
 
-    std::cout << "Enter email (optional): ";
+    std::cout << RGB_PURPLE + "Enter email (optional): " + RESET;
     std::getline(std::cin, login.email);
 
-    std::cout << "Enter username (optional): ";
+    std::cout << RGB_PURPLE + "Enter username (optional): " + RESET;
     std::getline(std::cin, login.user);
 
     if (login.email.empty() && login.user.empty())
     {
         clearScreen();
-        std::cout << "Error: Email and username cannot both be empty.\n";
+        std::cout << BRIGHT_RED + BOLD + "Error: Email and username cannot both be empty.\n" + RESET;
         pause();
         return;
     }
 
-    std::cout << "Enter password: ";
+    std::cout << RGB_PURPLE + "Enter password: " + RESET;
     std::getline(std::cin, login.pass);
 
     if (login.pass.empty())
     {
         clearScreen();
-        std::cout << "Error: Password cannot be empty.\n";
+        std::cout << BRIGHT_RED + BOLD + "Error: Password cannot be empty.\n" + RESET;
         pause();
         return;
     }
 
     saveLogin(login);
     clearScreen();
-    std::cout << "Login saved succesfully.\n";
+    std::cout << RGB_PURPLE + "Login saved succesfully.\n" + RESET;
     pause();
 }
 
@@ -188,7 +188,7 @@ void password()
     while (true)
     {
         clearScreen();
-        std::cout << "Enter the length of the password (between 1 and 999): ";
+        std::cout << RGB_PURPLE + "Enter the length of the password (between 1 and 999): " + RESET;
         std::cin >> login.length;
 
         // Check if the input is valid
@@ -197,7 +197,7 @@ void password()
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             clearScreen();
-            std::cout << "Invalid input. Please enter an integer between 1 and 999.\n";
+            std::cout << BRIGHT_RED + BOLD + "Invalid input. Please enter an integer between 1 and 999.\n" + RESET;
             pause();
         }
         else
@@ -208,6 +208,6 @@ void password()
     }
 
     clearScreen();
-    std::cout << "Generated Password: \n" << generatePass(login.length) << "\n";
+    std::cout << RGB_PURPLE + "Generated Password: \n" + RESET + BRIGHT_RED << generatePass(login.length) << "\n" + RESET;
     pause();
 }
