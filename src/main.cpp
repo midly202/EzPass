@@ -3,16 +3,8 @@
 
 #include "helper.h"
 
-/*
-
-TODO:
-- Sort alphabetically the logins
-
-*/
-
 int main()
 {
-    // Code
     while (true)
     {
         showMenu();
