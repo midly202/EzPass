@@ -7,7 +7,8 @@
 ## 🚀 Features
 
 ### 📂 View Saved Logins
-- Displays all stored logins in decrypted form
+- Easily view all stored logins in a decrypted format.
+- Logins are sorted alphabetically by title for easy navigation.
 
 
 ### 📝 Create New Logins
