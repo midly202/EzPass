@@ -65,6 +65,48 @@ void pause()
     clearScreen();
 }
 
+std::string base64Encode(const std::string& in) 
+{
+    std::string out;
+    int val = 0, valb = -6;
+    for (uint8_t c : in) 
+    {
+        val = (val << 8) + c;
+        valb += 8;
+        while (valb >= 0) 
+        {
+            out.push_back(base64_chars[(val >> valb) & 0x3F]);
+            valb -= 6;
+        }
+    }
+    if (valb > -6)
+        out.push_back(base64_chars[((val << 8) >> (valb + 8)) & 0x3F]);
+    while (out.size() % 4)
+        out.push_back('=');
+    return out;
+}
+
+std::string base64Decode(const std::string& in) 
+{
+    std::vector<int> T(256, -1);
+    for (int i = 0; i < 64; i++) T[base64_chars[i]] = i;
+
+    std::string out;
+    int val = 0, valb = -8;
+    for (uint8_t c : in) 
+    {
+        if (T[c] == -1) break;
+        val = (val << 6) + T[c];
+        valb += 6;
+        if (valb >= 0) 
+        {
+            out.push_back(char((val >> valb) & 0xFF));
+            valb -= 8;
+        }
+    }
+    return out;
+}
+
 // Encrypt / decrypt with XOR
 std::string xorCrypt(const std::string& data)
 {
@@ -86,10 +128,20 @@ void saveLogin(const Login& login)
         return;
     }
 
-    std::string entry = login.name + "|" + login.email + "|" + login.user + "|" + login.pass;
-    std::string encrypted = xorCrypt(entry);
-    file << encrypted << '\n';
+    auto encodeField = [](const std::string& field) 
+    {
+        return base64Encode(xorCrypt(field));
+    };
+
+    std::string encodedEntry =
+        encodeField(login.name) + "|" +
+        encodeField(login.email) + "|" +
+        encodeField(login.user) + "|" +
+        encodeField(login.pass);
+
+    file << encodedEntry << '\n';
 }
+
 
 // Read all logins from file
 std::vector<Login> readLogins()
@@ -101,23 +153,29 @@ std::vector<Login> readLogins()
     std::string line;
     while (std::getline(file, line))
     {
-        line = xorCrypt(line);
         size_t pos1 = line.find("|");
         size_t pos2 = line.find("|", pos1 + 1);
         size_t pos3 = line.find("|", pos2 + 1);
 
         if (pos1 != std::string::npos && pos2 != std::string::npos && pos3 != std::string::npos)
         {
+            auto decodeField = [](const std::string& field) 
+            {
+                return xorCrypt(base64Decode(field));
+            };
+
             Login login;
-            login.name = line.substr(0, pos1);                     // Read name
-            login.email = line.substr(pos1 + 1, pos2 - pos1 - 1);  // Read email
-            login.user = line.substr(pos2 + 1, pos3 - pos2 - 1);   // Read username
-            login.pass = line.substr(pos3 + 1);                    // Read password
+            login.name = decodeField(line.substr(0, pos1));
+            login.email = decodeField(line.substr(pos1 + 1, pos2 - pos1 - 1));
+            login.user = decodeField(line.substr(pos2 + 1, pos3 - pos2 - 1));
+            login.pass = decodeField(line.substr(pos3 + 1));
+
             logins.push_back(login);
         }
     }
     return logins;
 }
+
 
 // Display logins
 void displayLogins()
@@ -134,7 +192,6 @@ void displayLogins()
         for (size_t i = 0; i < logins.size(); ++i)
         {
             const auto& login = logins[i];
-            // std::cout << BRIGHT_RED << "Login #" << (i + 1) << RESET + "\n";
             std::cout << BRIGHT_RED << login.name << RESET + "\n";
             std::cout << RGB_PURPLE + "   Email:    " + RESET + BRIGHT_RED << (login.email.empty() ? "..." : login.email) << RESET + "\n";
             std::cout << RGB_PURPLE + "   Username: " + RESET + BRIGHT_RED << (login.user.empty() ? "..." : login.user) << RESET + "\n";
@@ -190,12 +247,31 @@ std::string generatePass(Password password)
     std::string result;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(
-        0, static_cast<int>(lettersAndNumbersAndSpecial.size()) - 1);
+    std::uniform_int_distribution<> distrib;
+
+    // Select the character set based on charSet
+    std::string charSet;
+
+    switch (password.charSet)
+    {
+    case 1: // No special characters
+        charSet = lettersAndNumbers;
+        break;
+    case 2: // Some special characters
+        charSet = lettersAndNumbersAndSpecial;
+        break;
+    case 3: // All special characters
+        charSet = lettersAndNumbersAndSpecialPlus;
+        break;
+    default:
+        throw std::invalid_argument("Invalid charSet value");
+    }
+
+    distrib = std::uniform_int_distribution<>(0, static_cast<int>(charSet.size()) - 1);
 
     for (int i = 0; i < password.length; ++i)
     {
-        result += lettersAndNumbersAndSpecial[distrib(gen)];
+        result += charSet[distrib(gen)];
     }
     return result;
 }

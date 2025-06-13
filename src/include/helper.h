@@ -8,6 +8,10 @@ void clearScreen();
 
 void pause();
 
+std::string base64Encode(const std::string& in);
+
+std::string base64Decode(const std::string& in);
+
 std::string xorCrypt(const std::string& data);
 
 void saveLogin(const Login& login);
@@ -18,6 +22,6 @@ void displayLogins();
 
 void createLogin();
 
-std::string generatePass(int length);
+std::string generatePass(Password password);
 
 void password();

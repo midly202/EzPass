@@ -5,9 +5,16 @@ const char XOR_KEY = 0x5A;
 
 const std::string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const std::string numbers = "0123456789";
-const std::string specialCharacters = "!@#$%^&*()-_=+[]{}|;:,.<>?";
-const std::string specialCharactersPlus = "// more complex characters that could be blocked on certain sites";
+const std::string specialCharacters = "!@#$%^&*()";
+const std::string specialCharactersPlus = "-_=+[]{}|;:,.<>?";
+const std::string lettersAndNumbers = letters + numbers;
 const std::string lettersAndNumbersAndSpecial = letters + numbers + specialCharacters;
+const std::string lettersAndNumbersAndSpecialPlus = letters + numbers + specialCharacters + specialCharactersPlus;
+
+static const std::string base64_chars =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"abcdefghijklmnopqrstuvwxyz"
+"0123456789+/";
 
 // Standard colors
 const std::string RESET = "\033[0m";
@@ -88,6 +95,6 @@ struct Login
 
 struct Password
 {
-    int length;
-    int charSet;
+    int length = 0;
+    int charSet = 0;
 };
