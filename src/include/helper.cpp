@@ -189,6 +189,13 @@ void displayLogins()
     else
     {
         clearScreen();
+
+        // Sort logins alphabetically by the 'name' field (login title)
+        std::sort(logins.begin(), logins.end(), [](const Login& a, const Login& b) 
+        {
+            return a.name < b.name;
+        });
+
         for (size_t i = 0; i < logins.size(); ++i)
         {
             const auto& login = logins[i];
