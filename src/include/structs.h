@@ -6,6 +6,7 @@ const char XOR_KEY = 0x5A;
 const std::string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const std::string numbers = "0123456789";
 const std::string specialCharacters = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+const std::string specialCharactersPlus = "// more complex characters that could be blocked on certain sites";
 const std::string lettersAndNumbersAndSpecial = letters + numbers + specialCharacters;
 
 // Standard colors
@@ -83,5 +84,10 @@ struct Login
     std::string email;
     std::string user;
     std::string pass;
+};
+
+struct Password
+{
     int length;
+    int charSet;
 };

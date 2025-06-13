@@ -13,14 +13,22 @@ void showMenu()
  +----------------------------------------------------------------+
  |                                                                |
  |                                                                |
- |)" << BRIGHT_RED + "   /$$$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   " + RESET + RGB_PURPLE + BOLD << R"(|
- |)" << BRIGHT_RED + "  | $$_____/|_____ $$ | $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$  " + RESET + RGB_PURPLE + BOLD << R"(|
- |)" << BRIGHT_RED + "  | $$           /$$/ | $$  \\ $$| $$  \\ $$| $$  \\__/| $$  \\__/  " + RESET + RGB_PURPLE + BOLD << R"(|
- |)" << BRIGHT_RED + "  | $$$$$       /$$/  | $$$$$$$/| $$$$$$$$|  $$$$$$ |  $$$$$$   " + RESET + RGB_PURPLE + BOLD << R"(|
- |)" << BRIGHT_RED + "  | $$__/      /$$/   | $$____/ | $$__  $$ \\____  $$ \\____  $$  " + RESET + RGB_PURPLE + BOLD << R"(|
- |)" << BRIGHT_RED + "  | $$        /$$/    | $$      | $$  | $$ /$$  \\ $$ /$$  \\ $$  " + RESET + RGB_PURPLE + BOLD << R"(|
- |)" << BRIGHT_RED + "  | $$$$$$$$ /$$$$$$$$| $$      | $$  | $$|  $$$$$$/|  $$$$$$/  " + RESET + RGB_PURPLE + BOLD << R"(|
- |)" << BRIGHT_RED + "  |________/|________/|__/      |__/  |__/ \\______/  \\______/   " + RESET + RGB_PURPLE + BOLD << R"(|
+ |)" << BRIGHT_RED + "   /$$$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   " + RESET + RGB_PURPLE + BOLD
+              << R"(|
+ |)" << BRIGHT_RED + "  | $$_____/|_____ $$ | $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$  " + RESET + RGB_PURPLE + BOLD
+              << R"(|
+ |)" << BRIGHT_RED + "  | $$           /$$/ | $$  \\ $$| $$  \\ $$| $$  \\__/| $$  \\__/  " + RESET + RGB_PURPLE + BOLD
+              << R"(|
+ |)" << BRIGHT_RED + "  | $$$$$       /$$/  | $$$$$$$/| $$$$$$$$|  $$$$$$ |  $$$$$$   " + RESET + RGB_PURPLE + BOLD
+              << R"(|
+ |)" << BRIGHT_RED + "  | $$__/      /$$/   | $$____/ | $$__  $$ \\____  $$ \\____  $$  " + RESET + RGB_PURPLE + BOLD
+              << R"(|
+ |)" << BRIGHT_RED + "  | $$        /$$/    | $$      | $$  | $$ /$$  \\ $$ /$$  \\ $$  " + RESET + RGB_PURPLE + BOLD
+              << R"(|
+ |)" << BRIGHT_RED + "  | $$$$$$$$ /$$$$$$$$| $$      | $$  | $$|  $$$$$$/|  $$$$$$/  " + RESET + RGB_PURPLE + BOLD
+              << R"(|
+ |)" << BRIGHT_RED + "  |________/|________/|__/      |__/  |__/ \\______/  \\______/   " + RESET + RGB_PURPLE + BOLD
+              << R"(|
  |                                                                |
  |     /\___/\                                                    |
  |    ( o   o )   Hi Midly! :3                                    |
@@ -30,10 +38,14 @@ void showMenu()
  |    (          ))))))))                                         |
  +----------------------------------------------------------------+
 )" << RESET << "\n";
-    std::cout << RGB_PURPLE + BOLD << "[1] Display logins\n" << RESET;
-    std::cout << RGB_PURPLE + BOLD << "[2] Create new login\n" << RESET;
-    std::cout << RGB_PURPLE + BOLD << "[3] Generate secure password\n" << RESET;
-    std::cout << RGB_PURPLE + BOLD << "[4] Exit\n" << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[1] Display logins\n"
+              << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[2] Create new login\n"
+              << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[3] Generate secure password\n"
+              << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[4] Exit\n"
+              << RESET;
     std::cout << BRIGHT_RED + BOLD << "Select an option: " << RESET;
 }
 
@@ -97,10 +109,10 @@ std::vector<Login> readLogins()
         if (pos1 != std::string::npos && pos2 != std::string::npos && pos3 != std::string::npos)
         {
             Login login;
-            login.name = line.substr(0, pos1); // Read name
-            login.email = line.substr(pos1 + 1, pos2 - pos1 - 1); // Read email
-            login.user = line.substr(pos2 + 1, pos3 - pos2 - 1); // Read username
-            login.pass = line.substr(pos3 + 1); // Read password
+            login.name = line.substr(0, pos1);                     // Read name
+            login.email = line.substr(pos1 + 1, pos2 - pos1 - 1);  // Read email
+            login.user = line.substr(pos2 + 1, pos3 - pos2 - 1);   // Read username
+            login.pass = line.substr(pos3 + 1);                    // Read password
             logins.push_back(login);
         }
     }
@@ -139,8 +151,8 @@ void createLogin()
 
     clearScreen();
 
-	std::cout << RGB_PURPLE + "[Required] Enter title: " + RESET;
-	std::getline(std::cin, login.name);
+    std::cout << RGB_PURPLE + "[Required] Enter title: " + RESET;
+    std::getline(std::cin, login.name);
 
     if (login.name.empty())
     {
@@ -173,7 +185,7 @@ void createLogin()
     pause();
 }
 
-std::string generatePass(int length)
+std::string generatePass(Password password)
 {
     std::string result;
     std::random_device rd;
@@ -181,7 +193,7 @@ std::string generatePass(int length)
     std::uniform_int_distribution<> distrib(
         0, static_cast<int>(lettersAndNumbersAndSpecial.size()) - 1);
 
-    for (int i = 0; i < length; ++i)
+    for (int i = 0; i < password.length; ++i)
     {
         result += lettersAndNumbersAndSpecial[distrib(gen)];
     }
@@ -190,16 +202,16 @@ std::string generatePass(int length)
 
 void password()
 {
-    Login login;
+    Password password;
 
     while (true)
     {
         clearScreen();
-        std::cout << RGB_PURPLE + "Enter the length of the password (between 1 and 999): " + RESET;
-        std::cin >> login.length;
+        std::cout << RGB_PURPLE + "Enter the length of the password: " + RESET;
+        std::cin >> password.length;
 
         // Check if the input is valid
-        if (std::cin.fail() || login.length <= 0 || login.length >= 1000)
+        if (std::cin.fail() || password.length <= 0 || password.length >= 1000)
         {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -214,7 +226,29 @@ void password()
         }
     }
 
+    while (true)
+    {
+        clearScreen();
+        std::cout << BRIGHT_RED + "[1] No special characters \n[2] Some special characters \n[3] All special characters\n" + RESET + RGB_PURPLE + "Character set: " + RESET;
+        std::cin >> password.charSet;
+
+        // Check if the input is valid
+        if (std::cin.fail() || password.charSet <= 0 || password.charSet >= 4)
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            clearScreen();
+            std::cout << BRIGHT_RED + BOLD + "Invalid input. Please enter an integer between 1 and 3.\n" + RESET;
+            pause();
+        }
+        else
+        {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            break;  // Valid input, exit the loop
+        }
+    }
+
     clearScreen();
-    std::cout << RGB_PURPLE + "Generated Password: \n" + RESET + BRIGHT_RED << generatePass(login.length) << "\n" + RESET;
+    std::cout << RGB_PURPLE + "Generated Password: \n" + RESET + BRIGHT_RED << generatePass(password) << "\n" + RESET;
     pause();
 }
