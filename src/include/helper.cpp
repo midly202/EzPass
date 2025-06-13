@@ -31,7 +31,7 @@ void showMenu()
               << R"(|
  |                                                                |
  |     /\___/\                                                    |
- |    ( o   o )   Hi Midly! :3                                    |
+ |    ( o   o )   Hi [USER]                                       |
  |    (  =^=  )                                                   |
  |    (        )                                                  |
  |    (         )                                                 |

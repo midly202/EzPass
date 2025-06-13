@@ -25,3 +25,7 @@
   - Letters, digits, and full special character set
 
 ---
+
+![showcase](image.png)
+
+---
