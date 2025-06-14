@@ -31,22 +31,19 @@ void showMenu()
               << R"(|
  |                                                                |
  |     /\___/\                                                    |
- |    ( o   o ) Hi (Add ur name in src/include/helper.cpp line 34)|
+ |    ( o   o )   Hi Midly! :3                                    |
  |    (  =^=  )                                                   |
  |    (        )                                                  |
  |    (         )                                                 |
  |    (          ))))))))                                         |
  +----------------------------------------------------------------+
 )" << RESET << "\n";
-    std::cout << RGB_PURPLE + BOLD << "[1] Display logins\n"
-              << RESET;
-    std::cout << RGB_PURPLE + BOLD << "[2] Create new login\n"
-              << RESET;
-    std::cout << RGB_PURPLE + BOLD << "[3] Generate secure password\n"
-              << RESET;
-    std::cout << RGB_PURPLE + BOLD << "[4] Exit\n"
-              << RESET;
-    std::cout << BRIGHT_RED + BOLD << "Select an option: " << RESET;
+    std::cout << RGB_PURPLE + BOLD << "[1] Display logins\n" + RESET;
+    std::cout << RGB_PURPLE + BOLD << "[2] Create a login\n" + RESET;
+    std::cout << RGB_PURPLE + BOLD << "[3] Delete a login\n" + RESET;
+    std::cout << RGB_PURPLE + BOLD << "[4] Generate secure password\n" + RESET;
+    std::cout << RGB_PURPLE + BOLD << "[5] Exit\n" + RESET;
+    std::cout << BRIGHT_RED + BOLD << "Select an option: " + RESET;
 }
 
 void clearScreen()
@@ -60,7 +57,7 @@ void clearScreen()
 
 void pause()
 {
-    std::cout << RGB_PURPLE + "\nPress ENTER to continue..." + RESET;
+    std::cout << BRIGHT_RED + "\nPress ENTER to continue..." + RESET;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     clearScreen();
 }
@@ -142,7 +139,6 @@ void saveLogin(const Login& login)
     file << encodedEntry << '\n';
 }
 
-
 // Read all logins from file
 std::vector<Login> readLogins()
 {
@@ -175,7 +171,6 @@ std::vector<Login> readLogins()
     }
     return logins;
 }
-
 
 // Display logins
 void displayLogins()
@@ -249,6 +244,60 @@ void createLogin()
     pause();
 }
 
+void removeLogin() 
+{
+    std::vector<Login> logins = readLogins();
+
+    if (logins.empty()) 
+    {
+        clearScreen();
+        std::cout << BRIGHT_RED + BOLD + "No logins found!\n" + RESET;
+        pause();
+        return;
+    }
+
+	clearScreen();
+    std::cout << RGB_PURPLE + "Enter the title of the login to be removed: " + RESET;
+    std::string title;
+    std::getline(std::cin >> std::ws, title); // std::ws eats any leading whitespace
+
+    auto it = std::remove_if(logins.begin(), logins.end(), [&](const Login& login) 
+    {
+        return login.name == title;
+    });
+
+    if (it == logins.end()) 
+    {
+        clearScreen();
+        std::cout << BRIGHT_RED + BOLD + "No login with the title \"" << title << "\" found.\n" + RESET;
+    }
+    else 
+    {
+        logins.erase(it, logins.end());
+
+        // Overwrite the file with the remaining logins
+        std::ofstream file(FILE_NAME, std::ios::trunc | std::ios::binary);
+        if (!file) 
+        {
+            std::cerr << BRIGHT_RED + BOLD + "Error: Could not open file for writing.\n" + RESET;
+			pause();
+            return;
+        }
+
+        for (const Login& login : logins) 
+        {
+            std::string entry = base64Encode(xorCrypt(login.name)) + "|" +
+                base64Encode(xorCrypt(login.email)) + "|" +
+                base64Encode(xorCrypt(login.user)) + "|" +
+                base64Encode(xorCrypt(login.pass));
+            file << entry << '\n';
+        }
+        clearScreen();
+        std::cout << BRIGHT_RED + "Login titled \"" << title << "\" removed successfully.\n" + RESET;
+    }
+    pause();
+}
+
 std::string generatePass(Password password)
 {
     std::string result;
@@ -312,7 +361,7 @@ void password()
     while (true)
     {
         clearScreen();
-        std::cout << BRIGHT_RED + "[1] No special characters \n[2] Some special characters \n[3] All special characters\n" + RESET + RGB_PURPLE + "Character set: " + RESET;
+        std::cout << RGB_PURPLE + "[1] No special characters \n[2] Some special characters \n[3] All special characters\n" + RESET + BRIGHT_RED + "Character set: " + RESET;
         std::cin >> password.charSet;
 
         // Check if the input is valid

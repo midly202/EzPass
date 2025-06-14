@@ -22,6 +22,8 @@ void displayLogins();
 
 void createLogin();
 
+void removeLogin();
+
 std::string generatePass(Password password);
 
 void password();

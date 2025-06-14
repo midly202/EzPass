@@ -31,9 +31,12 @@ int main()
                 createLogin();
                 break;
             case 3:
-                password();
+                removeLogin();
                 break;
             case 4:
+                password();
+                break;
+            case 5:
                 clearScreen();
                 return 0;
             default:
