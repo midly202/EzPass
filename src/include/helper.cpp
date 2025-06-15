@@ -1,5 +1,6 @@
 #include "helper.h"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -54,15 +55,15 @@ void pause()
     clearScreen();
 }
 
-std::string base64Encode(const std::string& in) 
+std::string base64Encode(const std::string& in)
 {
     std::string out;
     int val = 0, valb = -6;
-    for (uint8_t c : in) 
+    for (uint8_t c : in)
     {
         val = (val << 8) + c;
         valb += 8;
-        while (valb >= 0) 
+        while (valb >= 0)
         {
             out.push_back(base64_chars[(val >> valb) & 0x3F]);
             valb -= 6;
@@ -75,19 +76,19 @@ std::string base64Encode(const std::string& in)
     return out;
 }
 
-std::string base64Decode(const std::string& in) 
+std::string base64Decode(const std::string& in)
 {
     std::vector<int> T(256, -1);
     for (int i = 0; i < 64; i++) T[base64_chars[i]] = i;
 
     std::string out;
     int val = 0, valb = -8;
-    for (uint8_t c : in) 
+    for (uint8_t c : in)
     {
         if (T[c] == -1) break;
         val = (val << 6) + T[c];
         valb += 6;
-        if (valb >= 0) 
+        if (valb >= 0)
         {
             out.push_back(char((val >> valb) & 0xFF));
             valb -= 8;
@@ -117,7 +118,7 @@ void saveLogin(const Login& login)
         return;
     }
 
-    auto encodeField = [](const std::string& field) 
+    auto encodeField = [](const std::string& field)
     {
         return base64Encode(xorCrypt(field));
     };
@@ -147,7 +148,7 @@ std::vector<Login> readLogins()
 
         if (pos1 != std::string::npos && pos2 != std::string::npos && pos3 != std::string::npos)
         {
-            auto decodeField = [](const std::string& field) 
+            auto decodeField = [](const std::string& field)
             {
                 return xorCrypt(base64Decode(field));
             };
@@ -178,10 +179,8 @@ void displayLogins()
         clearScreen();
 
         // Sort logins alphabetically by the 'name' field (login title)
-        std::sort(logins.begin(), logins.end(), [](const Login& a, const Login& b) 
-        {
-            return a.name < b.name;
-        });
+        std::sort(logins.begin(), logins.end(), [](const Login& a, const Login& b)
+                  { return a.name < b.name; });
 
         for (size_t i = 0; i < logins.size(); ++i)
         {
@@ -236,11 +235,11 @@ void createLogin()
     pause();
 }
 
-void removeLogin() 
+void removeLogin()
 {
     std::vector<Login> logins = readLogins();
 
-    if (logins.empty()) 
+    if (logins.empty())
     {
         clearScreen();
         std::cout << BRIGHT_RED + BOLD + "No logins found!\n" + RESET;
@@ -248,40 +247,38 @@ void removeLogin()
         return;
     }
 
-	clearScreen();
+    clearScreen();
     std::cout << RGB_PURPLE + "Enter the title of the login to be removed: " + RESET;
     std::string title;
-    std::getline(std::cin >> std::ws, title); // std::ws eats any leading whitespace
+    std::getline(std::cin >> std::ws, title);  // std::ws eats any leading whitespace
 
-    auto it = std::remove_if(logins.begin(), logins.end(), [&](const Login& login) 
-    {
-        return login.name == title;
-    });
+    auto it = std::remove_if(logins.begin(), logins.end(), [&](const Login& login)
+                             { return login.name == title; });
 
-    if (it == logins.end()) 
+    if (it == logins.end())
     {
         clearScreen();
         std::cout << BRIGHT_RED + BOLD + "No login with the title \"" << title << "\" found.\n" + RESET;
     }
-    else 
+    else
     {
         logins.erase(it, logins.end());
 
         // Overwrite the file with the remaining logins
         std::ofstream file(FILE_NAME, std::ios::trunc | std::ios::binary);
-        if (!file) 
+        if (!file)
         {
             std::cerr << BRIGHT_RED + BOLD + "Error: Could not open file for writing.\n" + RESET;
-			pause();
+            pause();
             return;
         }
 
-        for (const Login& login : logins) 
+        for (const Login& login : logins)
         {
             std::string entry = base64Encode(xorCrypt(login.name)) + "|" +
-                base64Encode(xorCrypt(login.email)) + "|" +
-                base64Encode(xorCrypt(login.user)) + "|" +
-                base64Encode(xorCrypt(login.pass));
+                                base64Encode(xorCrypt(login.email)) + "|" +
+                                base64Encode(xorCrypt(login.user)) + "|" +
+                                base64Encode(xorCrypt(login.pass));
             file << entry << '\n';
         }
         clearScreen();
@@ -302,17 +299,17 @@ std::string generatePass(Password password)
 
     switch (password.charSet)
     {
-    case 1: // No special characters
-        charSet = lettersAndNumbers;
-        break;
-    case 2: // Some special characters
-        charSet = lettersAndNumbersAndSpecial;
-        break;
-    case 3: // All special characters
-        charSet = lettersAndNumbersAndSpecialPlus;
-        break;
-    default:
-        throw std::invalid_argument("Invalid charSet value");
+        case 1:  // No special characters
+            charSet = lettersAndNumbers;
+            break;
+        case 2:  // Some special characters
+            charSet = lettersAndNumbersAndSpecial;
+            break;
+        case 3:  // All special characters
+            charSet = lettersAndNumbersAndSpecialPlus;
+            break;
+        default:
+            throw std::invalid_argument("Invalid charSet value");
     }
 
     distrib = std::uniform_int_distribution<>(0, static_cast<int>(charSet.size()) - 1);
