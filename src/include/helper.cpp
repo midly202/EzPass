@@ -13,22 +13,14 @@ void showMenu()
  +----------------------------------------------------------------+
  |                                                                |
  |                                                                |
- |)" << BRIGHT_RED + "   /$$$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   " + RESET + RGB_PURPLE + BOLD
-              << R"(|
- |)" << BRIGHT_RED + "  | $$_____/|_____ $$ | $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$  " + RESET + RGB_PURPLE + BOLD
-              << R"(|
- |)" << BRIGHT_RED + "  | $$           /$$/ | $$  \\ $$| $$  \\ $$| $$  \\__/| $$  \\__/  " + RESET + RGB_PURPLE + BOLD
-              << R"(|
- |)" << BRIGHT_RED + "  | $$$$$       /$$/  | $$$$$$$/| $$$$$$$$|  $$$$$$ |  $$$$$$   " + RESET + RGB_PURPLE + BOLD
-              << R"(|
- |)" << BRIGHT_RED + "  | $$__/      /$$/   | $$____/ | $$__  $$ \\____  $$ \\____  $$  " + RESET + RGB_PURPLE + BOLD
-              << R"(|
- |)" << BRIGHT_RED + "  | $$        /$$/    | $$      | $$  | $$ /$$  \\ $$ /$$  \\ $$  " + RESET + RGB_PURPLE + BOLD
-              << R"(|
- |)" << BRIGHT_RED + "  | $$$$$$$$ /$$$$$$$$| $$      | $$  | $$|  $$$$$$/|  $$$$$$/  " + RESET + RGB_PURPLE + BOLD
-              << R"(|
- |)" << BRIGHT_RED + "  |________/|________/|__/      |__/  |__/ \\______/  \\______/   " + RESET + RGB_PURPLE + BOLD
-              << R"(|
+ |)" << BRIGHT_RED + "   /$$$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   " + RESET + RGB_PURPLE + BOLD + R"(|
+ |)" << BRIGHT_RED + "  | $$_____/|_____ $$ | $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$  " + RESET + RGB_PURPLE + BOLD + R"(|
+ |)" << BRIGHT_RED + "  | $$           /$$/ | $$  \\ $$| $$  \\ $$| $$  \\__/| $$  \\__/  " + RESET + RGB_PURPLE + BOLD + R"(|
+ |)" << BRIGHT_RED + "  | $$$$$       /$$/  | $$$$$$$/| $$$$$$$$|  $$$$$$ |  $$$$$$   " + RESET + RGB_PURPLE + BOLD + R"(|
+ |)" << BRIGHT_RED + "  | $$__/      /$$/   | $$____/ | $$__  $$ \\____  $$ \\____  $$  " + RESET + RGB_PURPLE + BOLD + R"(|
+ |)" << BRIGHT_RED + "  | $$        /$$/    | $$      | $$  | $$ /$$  \\ $$ /$$  \\ $$  " + RESET + RGB_PURPLE + BOLD + R"(|
+ |)" << BRIGHT_RED + "  | $$$$$$$$ /$$$$$$$$| $$      | $$  | $$|  $$$$$$/|  $$$$$$/  " + RESET + RGB_PURPLE + BOLD + R"(|
+ |)" << BRIGHT_RED + "  |________/|________/|__/      |__/  |__/ \\______/  \\______/   " + RESET + RGB_PURPLE + BOLD + R"(|
  |                                                                |
  |     /\___/\                                                    |
  |    ( o   o )   Hi Midly! :3                                    |
